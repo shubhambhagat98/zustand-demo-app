@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useStore } from "./store/Store";
+import "./App.css";
+import { useEffect } from "react";
+import { FilterInput } from "./components/FilterInput";
+import { PokemonTable } from "./components/PokemonTable";
 
-function App() {
+const POKEMON_URL =
+  "https://gist.githubusercontent.com/jherr/23ae3f96cf5ac341c98cd9aa164d2fe3/raw/0658aeff401d196dece7ec6fe6c726c6adc1cc00/gistfile1.txt";
+
+const App = () => {
+  const setPokemon = useStore((state) => state.setPokemon);
+
+  useEffect(() => {
+    fetch(POKEMON_URL)
+      .then((resp) => resp.json())
+      .then((pokemon) => setPokemon(pokemon));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <FilterInput />
+      </div>
+      <h1>List of Pokemons</h1>
+      <PokemonTable />
     </div>
   );
-}
+};
 
 export default App;
